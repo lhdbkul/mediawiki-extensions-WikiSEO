@@ -246,6 +246,64 @@ class MetaTag extends AbstractBaseGenerator implements GeneratorInterface {
 					]
 				)
 			);
+		} elseif (preg_match('/\/wiki\/(Item|Property):/',WikiSEO::protocolizeUrl(
+			$title->getFullURL(),
+			$this->outputPage->getRequest()
+		   ))) {
+			$this->outputPage->addHeadItem(
+				'canonical', Html::element(
+				'link',
+					[
+						'rel' => 'canonical',
+						'href' => preg_replace('/\/wiki\/(Item|Property):/', '/entity/', WikiSEO::protocolizeUrl(
+							$title->getFullURL(),
+							$this->outputPage->getRequest()
+						)),
+					]
+				)
+			);
+
+			$this->outputPage->addHeadItem(
+				'en', Html::element(
+				'link',
+					[
+						'rel' => 'alternate',
+						'href' => WikiSEO::protocolizeUrl(
+							$title->getFullURL().'?uselang=en',
+							$this->outputPage->getRequest()
+						),
+						'hreflang' => 'en',
+					]
+				)
+			);
+
+			$this->outputPage->addHeadItem(
+				'pl', Html::element(
+				'link',
+					[
+						'rel' => 'alternate',
+						'href' => WikiSEO::protocolizeUrl(
+							$title->getFullURL().'?uselang=pl',
+							$this->outputPage->getRequest()
+						),
+						'hreflang' => 'pl',
+					]
+				)
+			);
+
+			$this->outputPage->addHeadItem(
+				'x-default', Html::element(
+				'link',
+					[
+						'rel' => 'alternate',
+						'href' => WikiSEO::protocolizeUrl(
+							$title->getFullURL(),
+							$this->outputPage->getRequest()
+						),
+						'hreflang' => 'x-default',
+					]
+				)
+			);
 		}
 
 		foreach ( $this->metadata as $metaKey => $url ) {
