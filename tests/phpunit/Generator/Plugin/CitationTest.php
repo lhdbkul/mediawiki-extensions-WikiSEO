@@ -28,7 +28,7 @@ class CitationTest extends GeneratorTestBase {
 		$generator->init( $metadata, $out );
 		$generator->addMetadata();
 
-		$this->assertArraySubmapSame( [ [
+		$this->assertArrayContains( [ [
 			'citation_author', 'Foo, Bar'
 		] ], $out->getMetaTags() );
 	}
@@ -50,7 +50,7 @@ class CitationTest extends GeneratorTestBase {
 		$generator->init( $metadata, $out );
 		$generator->addMetadata();
 
-		$this->assertArraySubmapSame( [
+		$this->assertArrayContains( [
 			[ 'citation_author', 'Foo, Bar' ],
 			[ 'citation_author', 'Bar, Baz' ],
 		], $out->getMetaTags() );
@@ -92,7 +92,7 @@ class CitationTest extends GeneratorTestBase {
 		$generator->init( $metadata, $out );
 		$generator->addMetadata();
 
-		$this->assertArraySubmapSame( [
+		$this->assertArrayContains( [
 			[ 'citation_author', 'author' ],
 			[ 'citation_conference_title', 'conference_title' ],
 			[ 'citation_creation_date', 'creation_date' ],

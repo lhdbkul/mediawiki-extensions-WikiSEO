@@ -24,7 +24,7 @@ class DublinCoreTest extends GeneratorTestBase {
 		$generator->init( $metadata, $out );
 		$generator->addMetadata();
 
-		$this->assertArraySubmapSame( [ [
+		$this->assertArrayContains( [ [
 			'dc.identifier.wikidata', 'Q105955627'
 		] ], $out->getMetaTags() );
 	}
@@ -47,7 +47,7 @@ class DublinCoreTest extends GeneratorTestBase {
 		$generator->init( $metadata, $out );
 		$generator->addMetadata();
 
-		$this->assertArraySubmapSame( [
+		$this->assertArrayContains( [
 			[ 'DC.creator', 'Foo Bar' ],
 			[ 'DC.description', 'Example Description' ],
 			[ 'DC.publisher', 'Seo Inc.' ],
