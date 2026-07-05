@@ -104,14 +104,14 @@ abstract class AbstractBaseGenerator {
 	 * @throws InvalidArgumentException
 	 */
 	protected function getFileObject( string $name ): File {
-		// This should remove the namespace if present
-		$nameSplit = explode( ':', $name );
-		$name = array_pop( $nameSplit ) ?? '';
-
-		$title = MediaWikiServices::getInstance()->getTitleFactory()->makeTitle(
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->makeTitleSafe(
 			NS_FILE,
 			$name
 		);
+
+		if ( $title === null ) {
+			throw new InvalidArgumentException( sprintf( 'Title %s is invalid.', $name ) );
+		}
 
 		$file = MediaWikiServices::getInstance()->getRepoGroup()->findFile( $title );
 
@@ -155,7 +155,7 @@ abstract class AbstractBaseGenerator {
 				$this->metadata['image'] = $info['url'];
 				$this->metadata['image_width'] = $info['width'];
 				$this->metadata['image_height'] = $info['height'];
-			} catch ( InvalidArgumentException $e ) {
+			} catch ( InvalidArgumentException ) {
 				// File does not exist.
 				// Maybe the user has set an URL, should we do something?
 			}
@@ -171,7 +171,7 @@ abstract class AbstractBaseGenerator {
 					$this->metadata['image'] = $logo;
 					$this->fallbackImageActive = true;
 				}
-			} catch ( Exception $e ) {
+			} catch ( Exception ) {
 				// We do nothing
 			}
 		}
@@ -220,6 +220,7 @@ abstract class AbstractBaseGenerator {
 				$continue = $services->getService( 'PageImages.PageImages' )
 					->getImage( $this->outputPage->getTitle() ) === null;
 			} else {
+				// @phan-suppress-next-line PhanUndeclaredStaticMethod
 				$continue = PageImages::getPageImage( $this->outputPage->getTitle() ) === false;
 			}
 		}

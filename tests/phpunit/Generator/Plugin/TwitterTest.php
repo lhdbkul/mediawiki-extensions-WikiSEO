@@ -27,7 +27,7 @@ class TwitterTest extends GeneratorTestBase {
 		$generator->init( $metadata, $out );
 		$generator->addMetadata();
 
-		$this->assertArraySubmapSame( [ [
+		$this->assertArrayContains( [ [
 			'twitter:site', 'example'
 		] ], $out->getMetaTags() );
 	}
@@ -46,7 +46,7 @@ class TwitterTest extends GeneratorTestBase {
 		$generator->init( [], $out );
 		$generator->addMetadata();
 
-		$this->assertArraySubmapSame( [ [
+		$this->assertArrayContains( [ [
 			'twitter:site', '@TestKey'
 		] ], $out->getMetaTags() );
 	}
@@ -64,7 +64,7 @@ class TwitterTest extends GeneratorTestBase {
 		$generator->init( [ 'twitter_site' => '@NotAdded' ], $out );
 		$generator->addMetadata();
 
-		$this->assertArraySubmapSame( [ [
+		$this->assertArrayContains( [ [
 			'twitter:site', '@TestKey'
 		] ], $out->getMetaTags() );
 	}
@@ -79,7 +79,7 @@ class TwitterTest extends GeneratorTestBase {
 		$generator->init( [], $out );
 		$generator->addMetadata();
 
-		$this->assertArraySubmapSame( [ [
+		$this->assertArrayContains( [ [
 			'twitter:card', 'summary_large_image'
 		] ], $out->getMetaTags() );
 	}
@@ -97,7 +97,7 @@ class TwitterTest extends GeneratorTestBase {
 		$generator->init( [], $out );
 		$generator->addMetadata();
 
-		$this->assertArraySubmapSame( [ [
+		$this->assertArrayContains( [ [
 			'twitter:card', 'summary'
 		] ], $out->getMetaTags() );
 	}
@@ -115,7 +115,7 @@ class TwitterTest extends GeneratorTestBase {
 		$generator->init( [ 'twitter_card' => 'override_card' ], $out );
 		$generator->addMetadata();
 
-		$this->assertArraySubmapSame( [ [
+		$this->assertArrayContains( [ [
 			'twitter:card', 'override_card'
 		] ], $out->getMetaTags() );
 	}
