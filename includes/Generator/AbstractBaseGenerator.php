@@ -184,17 +184,28 @@ abstract class AbstractBaseGenerator {
 	 * @return bool|string
 	 */
 	protected function getRevisionTimestamp() {
-		$timestamp = $this->outputPage->getRevisionTimestamp();
+		if ( method_exists( $this->outputPage, 'getMetadata' ) ) {
+			// MW 1.43+
+			$timestamp = $this->outputPage->getMetadata()->getRevisionTimestamp();
+		} else {
+			$timestamp = $this->outputPage->getRevisionTimestamp();
+		}
 
 		// No cached timestamp, load it from the database
 		if ( $timestamp === null ) {
-			$timestamp =
-				MediaWikiServices::getInstance()
-					->getRevisionLookup()
-					->getKnownCurrentRevision(
-						$this->outputPage->getTitle(),
-						$this->outputPage->getRevisionId()
-					);
+			$revisionLookup = MediaWikiServices::getInstance()->getRevisionLookup();
+			if ( method_exists( $revisionLookup, 'getKnownLatestRevision' ) ) {
+				// MW 1.46+
+				$timestamp = $revisionLookup->getKnownLatestRevision(
+					$this->outputPage->getTitle(),
+					$this->outputPage->getRevisionId()
+				);
+			} else {
+				$timestamp = $revisionLookup->getKnownCurrentRevision(
+					$this->outputPage->getTitle(),
+					$this->outputPage->getRevisionId()
+				);
+			}
 
 			if ( $timestamp === false ) {
 				$timestamp = wfTimestampNow();

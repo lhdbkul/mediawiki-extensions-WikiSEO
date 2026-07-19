@@ -329,7 +329,13 @@ class RestSocialMediaImage extends SimpleHandler {
 		$roboto->setFillColor( $textColor );
 		$roboto->setFillColor( new ImagickPixel( '#dddddd' ) );
 
-		$rev = MediaWikiServices::getInstance()->getRevisionLookup()->getKnownCurrentRevision( $title );
+		$revisionLookup = MediaWikiServices::getInstance()->getRevisionLookup();
+		if ( method_exists( $revisionLookup, 'getKnownLatestRevision' ) ) {
+			// MW 1.46+
+			$rev = $revisionLookup->getKnownLatestRevision( $title );
+		} else {
+			$rev = $revisionLookup->getKnownCurrentRevision( $title );
+		}
 
 		// Last Modified
 		if ( is_object( $rev ) ) {
